@@ -1,9 +1,9 @@
-import './App.css';
+import './styles/basics.css'
 
 function App() {
   return (
     <div className="container">
-      <button className="button" > button</button>
+      <button className="btn" > button</button>
       <div className="inputcontainer">
         <input className="input" type="text" required placeholder=""/>
         <label className="inputName">input</label>
