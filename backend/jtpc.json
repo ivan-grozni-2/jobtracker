@@ -1,0 +1,121 @@
+{
+    "info": {
+      "name": "Job Tracker - Auth & Jobs",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "_postman_id": "job-tracker-collection"
+    },
+    "item": [
+      {
+        "name": "Register",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"] },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test+{{rand}}@example.com\",\n  \"password\": \"StrongPass123!\"\n}"
+          }
+        }
+      },
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"] },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"test+{{rand}}@example.com\",\n  \"password\": \"StrongPass123!\"\n}"
+          }
+        }
+      },
+      {
+        "name": "Refresh (use cookie)",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "url": { "raw": "{{baseUrl}}/api/auth/refresh", "host": ["{{baseUrl}}"], "path": ["api","auth","refresh"] }
+        }
+      },
+      {
+        "name": "Logout",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}"}],
+          "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api","auth","logout"] }
+        }
+      },
+      {
+        "name": "Create Job",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+          ],
+          "url": { "raw": "{{baseUrl}}/api/jobs", "host": ["{{baseUrl}}"], "path": ["api","jobs"] },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"company\": \"SafeCorp\",\n  \"title\": \"Frontend Dev\",\n  \"status\": \"applied\",\n  \"applied_at\": \"2025-10-01\",\n  \"notes\": \"Testing\",\n  \"skills\": [\"React\",\"MySQL\"]\n}"
+          }
+        }
+      },
+      {
+        "name": "Get Jobs",
+        "request": {
+          "method": "GET",
+          "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}"}],
+          "url": { "raw": "{{baseUrl}}/api/jobs", "host": ["{{baseUrl}}"], "path": ["api","jobs"] }
+        }
+      },
+      {
+        "name": "Get Job By Id",
+        "request": {
+          "method": "GET",
+          "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}"}],
+          "url": { "raw": "{{baseUrl}}/api/jobs/{{jobId}}", "host": ["{{baseUrl}}"], "path": ["api","jobs","{{jobId}}"] }
+        }
+      },
+      {
+        "name": "SQLi Attempt - Login (payload)",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"] },
+          "body": { "mode": "raw", "raw": "{ \"email\": \"doesnotexist' OR '1'='1\", \"password\": \"x\" }" }
+        }
+      },
+      {
+        "name": "SQLi Attempt - Create Job (payload)",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+          ],
+          "url": { "raw": "{{baseUrl}}/api/jobs", "host": ["{{baseUrl}}"], "path": ["api","jobs"] },
+          "body": { "mode": "raw", "raw": "{ \"company\": \"EvilCorp'); DROP TABLE jobs; --\", \"title\":\"Hax\", \"status\":\"applied\", \"skills\":[] }" }
+        }
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "exec": [
+            "// helper to create a random token per run",
+            "if (!pm.variables.get('rand')) {",
+            "  pm.variables.set('rand', Math.floor(Math.random()*1000000));",
+            "}"
+          ]
+        }
+      }
+    ],
+    "variable": [
+      { "key": "baseUrl", "value": "http://localhost:5000" },
+      { "key": "accessToken", "value": "" },
+      { "key": "jobId", "value": "" },
+      { "key": "rand", "value": "" }
+    ]
+  }
+  

@@ -1,0 +1,12 @@
+#node modules
+backend/node_modules/
+frontend/node_modules/
+
+#logs
+*.log
+
+#envioronments
+*.env
+
+#tests
+*.test.js
