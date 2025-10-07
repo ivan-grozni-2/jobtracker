@@ -54,6 +54,7 @@
     top: -100%;
     left: -90%;
     box-shadow: none;
+    transition: 0.5s;
   }
   
   .btn:hover:after {
@@ -105,13 +106,22 @@
     transition: 0.3s;
   }
   
-  .input:valid,
   .input:focus {
     border: 2px, solid, var(--color-primary);
   }
   
-  .input:valid~.inputName,
+  .input:not([value = ""]):not([type = "date"])~.inputName,
   .input:focus~.inputName {
+    top: 0.1rem;
+    font-size: 0.7rem;
+    color: var(--color-primary);
+    background-color: var(--color-surface);
+    padding: 2px;
+    z-index: 1;
+  }
+  .altInputName{
+    position: absolute;
+    left: 20px;
     top: 0.1rem;
     font-size: 0.7rem;
     color: var(--color-primary);

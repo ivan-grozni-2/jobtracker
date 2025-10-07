@@ -1,0 +1,86 @@
+.job-container{
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.job-card{
+    border: 1px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+.skills{
+    margin-top: 8px;
+}
+
+.skill{
+    background: #eef;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-right: 4px;
+    font-size: 0.8rem;
+}
+
+.filter-bar{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+
+}
+
+.pagination{
+    display:flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.jobs_header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.job-actions{
+    display: flex;
+    gap:8px;
+    margin-top: 8px;
+}
+
+.button.edit, .button.delete{
+    background-color: transparent;
+}
+.button.delete{
+    color: crimson;
+}
+
+.modal-overlay{
+    position: fixed;
+    top:0; left:0; bottom:0; right:0;
+    background: rgba(0,0,0,0.5);
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.modal{
+    background:var(--color-surface);
+    padding:20px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 400px;
+    color:var(--color-text-1)
+}
+
+.modal-actions{
+    display:flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+

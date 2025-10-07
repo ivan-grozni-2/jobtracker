@@ -7,6 +7,7 @@
   --color-text-1:#111827;
   --color-text-2:#6B7280;
   --color-border:#E5E7EB;
+  --radius:6px;
 }
 
 [data-theme="darkmode"]{
