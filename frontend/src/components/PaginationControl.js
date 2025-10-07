@@ -8,9 +8,9 @@ export default function PaginationControl(thePage) {
                 ◄ Prev
             </button>
 
-            <span> Page {thePage.page} of {thePage.totalPage} </span>
+            <span> Page {thePage.page} of {thePage.totalPages} </span>
 
-            <button disabled={thePage.page >= thePage.totalPage} onClick={() => thePage.onChange(thePage.page + 1)}>
+            <button disabled={thePage.page >= thePage.totalPages} onClick={() => thePage.onChange(thePage.page + 1)}>
                 ► Next
             </button>
         </div>

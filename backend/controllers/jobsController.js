@@ -110,7 +110,7 @@ exports.getJobs = async (req, res) => {
         let pageNum = Math.max(parseInt(page, 10) || 1, 1);
         let limitNum = Math.min(Math.max(parseInt(limit, 10) || 10, 1), 100);
         const maxPage = Math.ceil((jobs.length) / limitNum);
-        pageNum = Math.min(pageNum, maxPage);
+        pageNum = Math.max(Math.min(pageNum, maxPage), 1);
         let offset = (pageNum - 1) * limit;
 
         let [criteria, order] = sort.split(':');
@@ -230,7 +230,7 @@ exports.updateJobs = async (req, res) => {
             note = COALESCE(?, note), 
             cover_letter = COALESCE(?, cover_letter), 
             salary = COALESCE(?, salary)
-           ) WHERE id = ?`,
+            WHERE id = ?`,
             [company, title, status, appliedDate, releaseDate, note, coverLetter, salary, jobID]
         );
 

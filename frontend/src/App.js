@@ -1,5 +1,12 @@
 import './styles/basics.css'
+import React from 'react';
 import JobPage from './pages/JobPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
@@ -10,7 +17,23 @@ function App() {
         <label className="inputName">input</label>
       </div>
     </div>*/
-    <JobPage/>
+    <AuthProvider>
+      <ThemeProvider>
+        <Router>
+          <Routes>
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/jobs'
+              element={
+                <ProtectedRoute>
+                  <JobPage />
+                </ProtectedRoute>
+              } />
+            <Route path="*" element={<LoginPage />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
 
 
   );

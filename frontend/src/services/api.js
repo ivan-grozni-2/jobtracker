@@ -1,17 +1,39 @@
-const baseUrl = "http://localhost:5000/api";
+const BASE_URL = "http://localhost:5000/api";
 
 export async function fetchWithAuth(endpoint, options = {}) {
     const token = localStorage.getItem('accessToken');
     const headers = {
-        'Content-Type': 'appliction/json',
+        'Content-Type': 'application/json',
         ...(options.headers || {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {})
     };
 
-    const response = await fetch(`${baseUrl}${endpoint}`, {
+    let response = await fetch(`${BASE_URL}${endpoint}`, {
         ...options,
-        headers
+        headers, 
+        credentials:'include'
     });
+
+    if(response.status === 401){
+        
+    console.log("refresh ");
+        try{
+            const newToken = await refreshToken();
+            const retryHeaders = {
+                ...headers,
+                Authorization:`Bearer ${newToken}`
+            };
+
+            response = await fetch(`${BASE_URL}${endpoint}`,{
+                ...options,
+                headers: retryHeaders,
+                credentials: 'include'
+            })
+        }catch(err){
+            console.warn('Token refresh failed');
+            throw err;
+        }
+    }
 
     if (!response.ok) {
         const err = await response.json().catch(() => ({}));
@@ -44,4 +66,58 @@ export async function deleteJob(id) {
         method: 'DELETE'
     })
 
+}
+
+export async function login(email, password){
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({email, password}),
+        credentials:'include'
+    });
+
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Login failed');
+
+    localStorage.setItem('accessToken', data.accessToken);
+    return data;
+
+
+}
+
+export async function register(userData){
+    const res = await fetch(`${BASE_URL}/auth/register`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(userData)
+    });
+
+
+    const data = await res.json()
+
+    if(!res.ok) throw new Error(data.error || 'Register failed');
+
+    return data;
+}
+
+export async function refreshToken(){
+    const res = await fetch(`${BASE_URL}/auth/refresh`,{
+        method:'POST',
+        credentials:'include'
+    });
+    const data = await res.json();
+
+    if(!res.ok) throw new Error(data.error|| 'Refresh token not updating');
+
+    localStorage.setItem('accessToken', data.accessToken);
+    return data.accessToken;
+}
+
+export async function logout(){
+    const res = await fetchWithAuth(`/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    localStorage.removeItem("accessToken");
+    if(res.ok === false) throw new Error("Cannot Logout");
 }

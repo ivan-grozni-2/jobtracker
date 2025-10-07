@@ -6,8 +6,17 @@ import PaginationControls from '../components/PaginationControl';
 import AddEditJobModal from '../components/AddEditJobModal'
 import { deleteJob } from '../services/api';
 import '../styles/job.css';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from '../context/ThemeContext';
+
 
 export default function JobPage() {
+
+    const { logout } = useContext(AuthContext);
+    const { theme, toggleTheme } = useContext(ThemeContext);
+    const navigate = useNavigate();
 
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -41,6 +50,7 @@ export default function JobPage() {
                 setJobs(data.jobs);
                 setMeta({ totalPages: data.TotalPage, pageNum: data.page });
             } catch (err) {
+                console.log("err ", JSON.stringify(err))
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -58,18 +68,28 @@ export default function JobPage() {
 
     }
 
+    const handleLogout = async () => {
+        await logout();
+        navigate('/logout');
+    }
+
     return (
         <div className="job-container">
             <h2>Job Tracker</h2>
-
+            <div className="job_header">
+                <button onClick={toggleTheme} className="btn-secondary">
+                    {theme === 'light' ? '🌙' : '☀️'}
+                </button>
+                <button onClick={handleLogout}>logout</button>
+            </div>
             <button className='button' onClick={() => { setEditingJob(null); setModalOpen(true); }}> +Add </button>
 
             <FilterBar filters={filters} onChange={handleFilterChange} />
 
             {loading && <p>Loading jobs...</p>}
-            {error && <p classname='error'>{error}</p>}
+            {error && <p className='error'>{error}</p>}
 
-            <div classname="job-list">
+            <div className="job-list">
                 {jobs.map(job => (
                     <JobCard
                         key={job.id}

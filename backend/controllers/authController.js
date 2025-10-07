@@ -165,19 +165,18 @@ exports.refreshToken = async (req, res, next) => {
 
 exports.logout = async (req, res) => {
     try {
-
         const token = req.cookies.refreshToken;
         if(token){
             await this.revokeAllTokens(req.user.id)
         }
         res.clearCookie('refreshToken', {
             httponly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: 'lax'
+            secure: true,
+            sameSite: 'strict'
         });
-
         res.json({ message: 'Logged out' });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: ' logout failed ' + err })
     }
 };

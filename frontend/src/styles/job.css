@@ -1,15 +1,26 @@
 .job-container{
+    background-color: var(--color-background);
     max-width: 800px;
     margin: auto;
     padding: 20px;
     font-family: sans-serif;
+    color: var(--color-text-1)
 }
 
 .job-card{
-    border: 1px;
+    background-color: var(--color-surface);
+    border:solid 1px var(--color-border);
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 6px;
+    width:fit-content;
+    flex-grow: 0.3;
+}
+
+.job-list{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .skills{
@@ -17,7 +28,7 @@
 }
 
 .skill{
-    background: #eef;
+    background: var(--color-text-2);
     border-radius: 4px;
     padding: 2px 6px;
     margin-right: 4px;
@@ -26,9 +37,13 @@
 
 .filter-bar{
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
     margin-bottom: 15px;
 
+}
+
+.inputcontainer.filter{
+    width: fit-content;
 }
 
 .pagination{
@@ -48,13 +63,31 @@
 .job-actions{
     display: flex;
     gap:8px;
-    margin-top: 8px;
+    align-items: center;
 }
 
-.button.edit, .button.delete{
-    background-color: transparent;
+button.edit, button.delete{
+    color: var(--color-text-1);
+    background-color: #ffffff11;
+    font-size: 1.5rem;
+    
 }
-.button.delete{
+button.delete:hover{
+    box-shadow: none;
+    color: var(--color-border);
+    text-shadow: 
+    0 0 3px crimson,
+    0 0 3px crimson
+} 
+button.edit:hover{
+    box-shadow: none;
+    color: var(--color-border);
+    text-shadow: 
+    0 0 3px var(--color-primary),
+    0 0 3px var(--color-primary)
+
+}
+button.delete{
     color: crimson;
 }
 

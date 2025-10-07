@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/job.css'
 
 export default function JobCard(jobs) {
     const job = jobs.job;
@@ -22,8 +23,8 @@ export default function JobCard(jobs) {
                     </div>)
             }
             <div className='job-actions'>
-                <button onClick={jobs.onEdit} className='button edit'>🖊</button>
-                <button onClick={jobs.onDelete} className='button delete'>🗑</button>
+                <button onClick={jobs.onEdit} className='edit'>🖊</button>
+                <button onClick={jobs.onDelete} className='delete'>🗑</button>
             </div>
 
         </div>

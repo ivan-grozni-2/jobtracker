@@ -26,7 +26,7 @@ export default function AddEditJobModal(modal) {
                 title: job.title || '',
                 company: job.company || '',
                 status: job.status || 'applied',
-                salary: job.title || 0,
+                salary: job.salary || 0,
                 note: job.note || '',
                 coverLetter: job.cover_letter || '',
                 skill: job.skill || [],

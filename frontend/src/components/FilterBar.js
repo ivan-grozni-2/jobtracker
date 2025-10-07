@@ -15,18 +15,18 @@ export default function FilterBar(params) {
     return (
         <div className="filter-bar">
 
-            <div className="inputcontainer">
+            <div className="inputcontainer filter">
 
                 <input
                     className="input"
-                    type="text"
+                    type="search"
                     name="search"
                     value={local.search}
                     onChange={handleInput}
                 />
                 <label className="inputName">Search</label>
             </div>
-            <div className="inputcontainer">
+            <div className="inputcontainer filter">
 
                 <select name="status" className="input" value={local.status} onChange={handleInput} >
                     <option value="" >All</option>
@@ -38,7 +38,7 @@ export default function FilterBar(params) {
                 </select>
                 <label className="inputName">status</label>
             </div>
-            <div className="inputcontainer">
+            <div className="inputcontainer filter">
 
                 <select name="sort" className="input" value={local.sort} onChange={handleInput} >
                     <option value="applied_date:desc" >Newest application</option>

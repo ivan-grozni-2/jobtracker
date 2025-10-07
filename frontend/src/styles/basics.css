@@ -14,10 +14,10 @@
   }
   
   button {
+    border: none;
     padding: 10px;
     margin: 10px;
-    color: var(--color-text-1);
-    border: none;
+    color: white;
     background: var(--color-primary);
     border-radius: 50vmin;
     cursor: pointer;
@@ -79,8 +79,7 @@
   }
   
   .inputcontainer {
-    max-width: fit-content;
-    max-width: fit-content;
+    width: 100%;
     position: relative;
     margin: 0;
     padding: 0;
@@ -88,15 +87,16 @@
   }
   
   .input {
-    border: none;
+    border: solid 2px rgba(0,0,0,0);
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
     outline: none;
     position: relative;
-    box-shadow: 0 0 2px rgb(0, 0, 0, 0.7);
+    box-shadow: 0 0 1px black;
     background-color: rgba(255, 255, 255, 0.5);
     z-index: 1;
+    width: 80%
   }
   
   .inputName {
@@ -128,4 +128,13 @@
     background-color: var(--color-surface);
     padding: 2px;
     z-index: 1;
+  }
+  .error{
+    color:crimson;
+    font-weight: bold;
+  }
+  .links{
+    text-decoration: none;
+    font-style: italic;
+    color: var(--color-accent);
   }
