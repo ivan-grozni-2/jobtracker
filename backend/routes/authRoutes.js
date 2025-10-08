@@ -1,6 +1,6 @@
 const express = require('express');
-const {body} = require('express-validator');
-const {register, login, refreshToken, logout, getActiveSessions} = require('../controllers/authController');
+const {body, check} = require('express-validator');
+const {register, login, refreshToken, logout, getActiveSessions, updateProfile} = require('../controllers/authController');
 const validate = require('../middlewares/validate');
 const authenticate = require('../middlewares/authMiddleware');
 
@@ -22,6 +22,14 @@ router.post('/login',
     validate,
     login
 );
+
+router.put('/profile', authenticate,
+    [
+        body('experience').optional({checkfalsy:true}).isInt({min : 0, max:75}),
+        body('skills').optional({checkfalsy:true}).isArray()
+    ], validate,
+    updateProfile
+)
 
 router.post('/refresh', refreshToken);
 

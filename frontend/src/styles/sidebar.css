@@ -1,9 +1,10 @@
-.sidebar{
+.sidebar {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
     width: 220px;
+    max-width: 220px;
     background: var(--color-surface);
     border-right: 1px solid var(--color-border);
     color: var(--color-text-1);
@@ -13,19 +14,58 @@
     z-index: 4;
 }
 
-.sidebar.collapsed{
-    transform: translateX(-100%);
+.profile {
+    background: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    color: var(--color-text-1);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease, transform 0.3s ease;
+    z-index: 4;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 220px;
 }
 
-.sidebar-header{
+.profile.collapsed {
+    transform: translateX(150%);
+}
+
+.sidebar.collapsed {
+    transform: translateX(-150%);
+}
+
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     padding: 1.5rem;
     border-bottom: 1px solid var(--color-border);
     font-weight: 600;
     font-size: 1.25rem;
     color: var(--color-primary);
+    align-items: center;
+    max-width: 220px;
+}
+.sidebar-header h3{
+    margin: 0;
+}
+.sidebar-header p {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-style: italic;
+    margin: 0;
+    display: inline-block;
+  font-size: clamp(12px, 2vw, 0.7rem);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.sidebar-nav{
+.sidebar-nav {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -36,24 +76,46 @@
     overflow-y: scroll;
 }
 
-.logo h3{
+.logo h3 {
     margin-top: 30px;
 }
-.sidebar a{
+
+.sidebar a {
     text-decoration: none;
     color: var(--color-text-1);
     padding: 0.6rem 0.8rem;
     border-radius: 6px;
     transition: background 0.2s, color 0.2s;
 }
-.sidebar-nav a:hover{
+
+.sidebar-nav a:hover {
     background: var(--color-border);
 }
-.sidebar-nav a.active{
+
+.sidebar-nav a.active {
     background: var(--color-primary);
     color: white;
 }
-.sidebar-toggle{
+
+.sidebar-toggle.profile{
+    display: none;
+    position: fixed;
+    top: 0.5rem;
+    right: 0.5rem;
+    left: auto;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    z-index: 7;
+    height: fit-content;
+    width: fit-content;
+}
+
+.sidebar-toggle {
     display: none;
     position: fixed;
     top: 0.5rem;
@@ -65,14 +127,34 @@
     font-size: 1.2rem;
     padding: 0.4rem 0.6rem;
     cursor: pointer;
-    z-index: 5;
-    width: fit-content;
-    height: fit-content;
+    z-index: 7;
 }
-.list{
+
+.profilebar-toggle {
+    position: fixed;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    z-index: 7;
+}
+
+.list {
     padding: 0;
 }
-.entry{
+.pskill.list{
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.entry {
     display: flex;
     flex-direction: row;
     list-style-type: none;
@@ -80,43 +162,56 @@
     align-items: center;
     height: 2rem;
 }
-.entry::before{
+
+.entry::before {
     content: '◼';
     font-size: 1.5rem;
 }
-.applied::before{
+
+.applied::before {
     color: var(--color-primary);
 }
-.hired::before{
+
+.hired::before {
     color: green;
 }
-.rejected::before{
+
+.rejected::before {
     color: var(--color-accent);
 }
-.resigned::before{
+
+.resigned::before {
     color: var(--color-accent);
 }
-.fired::before{
+
+.fired::before {
     color: crimson;
 }
-.sidebar-nav p, .sidebar-nav h3{
+
+.sidebar-nav p,
+.sidebar-nav h3 {
     font-size: 0.75rem;
 }
 
-@media(max-width: 760px){
+@media(max-width: 760px) {
 
-    .sidebar{
+    .sidebar {
         transform: translateX(-100%);
     }
-    .sidebar.open{
+
+    .sidebar.open {
         transform: translateX(0);
     }
-    .sidebar-toggle{
+
+    .sidebar-toggle {
         display: block;
     }
-    .dashboard-main{
+    .sidebar-toggle.profile {
+        display: block;
+    }
+
+    .dashboard-main {
         margin-left: 0;
     }
-    
-}
 
+}

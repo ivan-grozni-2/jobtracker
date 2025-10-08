@@ -1,56 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { jobSummary } from '../services/api';
-import JobCard from './JobCards';
+//import { updateProfile } from '../services/api';
 import '../styles/sidebar.css';
 
 
-export default function Sidebar(params) {
+export default function Profilebar(params) {
     const [open, setOpen] = useState(true);
     const [loading, setLoading] = useState(false)
-    const [statusCount, setStatusCount] = useState([]);
-    const [topThree, setTopThree] = useState([]);
-    const [upcomingInterview, setUpcomingInterview] = useState([]);
+    const [profile, setProfile] = useState({ email: '', name: '', experience: 0, skill: [] })
+    const [skills, setSkills] = useState([])
 
     const toggleSidebar = () => setOpen(prev => !prev);
 
     useEffect(() => {
-        async function init() {
-            try {
-                setLoading(true);
+        setProfile(params.onGet());
+        setSkills(params.onGet().skills.map((s) => ( s = s.skill )))
 
-                const data = await jobSummary();
-
-                setTopThree(data.topThree);
-                setStatusCount(data.statusList);
-                setUpcomingInterview(data.upcomingInterview);
-
-                console.log(data);
-            } catch (err) {
-                throw new Error(err)
-            } finally {
-                setLoading(false);
-            }
-
-        }
-        init();
-    }, [open])
+    }, [open, params.user])
 
     return (
         <>
-            <button className='sidebar-toggle' onClick={toggleSidebar}>
+            <button className='sidebar-toggle profile' onClick={toggleSidebar}>
                 ☰
             </button>
-
-            <aside className={`sidebar ${open ? ' open' : ' collapsed'}`}>
+            {loading && <p>loading...</p>}
+            <aside className={`profile ${open ? ' open' : ' collapsed'}`}>
                 <div className='sidebar-header'>
-                    <h3 className='logo'>Summary</h3>
+                    <h3 className='logo'>{profile.name}</h3>
+                    <p className='email'>{profile.email}</p>
                 </div>
-                
+
+
                 <nav className='sidebar-nav'>
+                    <div className='experience'>
+                        <h4>Years of experience</h4>
+                        <p>{profile.experience}</p>
+                    </div>
+                    <div className='list'>
+                        <h4>Your Skills</h4>
+                            <ul className='pskill list'>
+                                {
+                                    skills.map((s, i) => (
+                                        <li className={`skill match ${s}`} key={i}>
+                                            {s}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                    </div>
+
+                </nav>
+
+
+
+
+                {/*<nav className='sidebar-nav'>
                     <div className='jobs-status'>
                         <h4>Jobs Status</h4>
-                        
-                        {!loading?<ul className='list'>
+                        {loading?<ul className='list'>
                             {
                                 statusCount.map((s, i) => (
                                     <li className={`entry ${s.status}`} key={i}>
@@ -92,7 +98,7 @@ export default function Sidebar(params) {
                             }
                         </div>
                     </div>
-                </nav>
+                </nav>*/}
             </aside>
 
         </>

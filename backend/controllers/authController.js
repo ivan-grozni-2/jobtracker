@@ -13,6 +13,7 @@ function createAccessToken(user) {
     );
 }
 
+
 async function createRefreshToken(userId, req) {
 
     const jti = crypto.randomUUID();
@@ -25,8 +26,8 @@ async function createRefreshToken(userId, req) {
 
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    const ip = req.ip || req.connection.remoteAddress||null;
-    const userAgent = req.headers['user-agent']||null;
+    const ip = req.ip || req.connection.remoteAddress || null;
+    const userAgent = req.headers['user-agent'] || null;
 
     await db.promise().execute(
         'INSERT INTO refresh_tokens (user_id, token, expires_at, ip_address, user_agent) VALUES (?, ?, ?, ?, ?)',
@@ -34,6 +35,7 @@ async function createRefreshToken(userId, req) {
     );
     return token;
 }
+
 
 exports.register = async (req, res, next) => {
     try {
@@ -71,11 +73,12 @@ exports.register = async (req, res, next) => {
 
 }
 
+
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
-        const [rows] = await db.promise().query('SELECT id, name, email, password FROM user WHERE email = ?', [email])
+        const [rows] = await db.promise().query('SELECT id, name, email, password, experience FROM user WHERE email = ?', [email])
 
         if (rows.length === 0) {
             return res.status(401).json({ error: 'Invalid credentials' })
@@ -89,6 +92,8 @@ exports.login = async (req, res, next) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
+        const [skills] = await db.promise().query('SELECT skill FROM user_skill WHERE user_id = ?', [user.id])
+
         const accessToken = createAccessToken({ id: user.id, email: user.email });
         const refreshToken = await createRefreshToken(user.id, req);
 
@@ -99,13 +104,48 @@ exports.login = async (req, res, next) => {
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        res.json({ user: { id: user.id, email: user.email, name: user.name }, accessToken })
+        res.json({ user: { id: user.id, email: user.email, name: user.name, skills: skills, experience: user.experience }, accessToken })
 
     } catch (err) {
-        res.status(401).json({error:"Login error"})
+        res.status(401).json({ error: "Login error" })
         next(err);
     }
 };
+
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const { experience = null, skills = [] } = req.body;
+        const userId = req.user.id;
+
+        let [oldSkill] = await db.promise().query('SELECT skill from user_skill WHERE user_id = ?', [userId]);
+        oldSkill = oldSkill.map((s) => (s = s.skill))
+
+        const unique = new Set();
+
+        for (const oneSkill of oldSkill) {
+            unique.add(oneSkill.toLowerCase())
+        }
+
+        for (const oneSkill of skills) {
+            if (!unique.has(oneSkill.toLowerCase())) {
+                unique.add(oneSkill.toLowerCase())
+
+                await db.promise().execute(
+                    "INSERT INTO user_skill (user_id, skill) value (?, ?)", [userId, oneSkill]
+                )
+            }
+        }
+
+        await db.promise().execute("UPDATE user SET experience = ? WHERE id = ?", [experience, userId])
+
+        res.json({message:'success'})
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Cannot update profile' })
+    }
+}
+
 
 exports.refreshToken = async (req, res, next) => {
     try {
@@ -166,7 +206,7 @@ exports.refreshToken = async (req, res, next) => {
 exports.logout = async (req, res) => {
     try {
         const token = req.cookies.refreshToken;
-        if(token){
+        if (token) {
             await this.revokeAllTokens(req.user.id)
         }
         res.clearCookie('refreshToken', {
@@ -187,13 +227,13 @@ exports.revokeAllTokens = async (userId) => {
 }
 
 exports.getActiveSessions = async (req, res) => {
-    try{
+    try {
         const [rows] = await db.promise().query(
             'SELECT id, ip_address, user_agent, created_at, expires_at from refresh_tokens WHERE user_id = ?', [req.user.id]
         );
         res.json(rows);
 
-    }catch(err){
-        res.status(500).json({error:"can't fetch sessions"});
+    } catch (err) {
+        res.status(500).json({ error: "can't fetch sessions" });
     }
 }

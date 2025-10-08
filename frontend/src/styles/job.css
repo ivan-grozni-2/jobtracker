@@ -6,6 +6,7 @@
 .dashboard{
     flex: 1;
     margin-left: 220px;
+    margin-right: 220px;
     background: var(--color-background);
     color: var(--color-text-1);
     min-height: 100vh;
@@ -16,6 +17,12 @@
     transition: all 0.3s ease;
     margin-left: 0;
 }
+.profile.collapsed ~ .dashboard{
+    transition: all 0.3s ease;
+    margin-right: 0;
+}
+
+
 
 .dashboard-header{
     display: flex;
@@ -104,6 +111,13 @@
     gap: 5px;
 }
 .skill{
+    background: var(--color-text-2);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-right: 4px;
+    font-size: 0.8rem;
+}.skill.match{
     background: var(--color-primary);
     color: white;
     border-radius: 4px;

@@ -3,6 +3,14 @@ import '../styles/job.css'
 
 export default function JobCard(jobs) {
     const job = jobs.job;
+
+    const matchSkill = (comp) => {
+        const skill = jobs.skill.map((s) => (s = s.skill.toLowerCase()))
+        console.log(skill.includes(comp.toLowerCase()))
+        return skill.includes(comp.toLowerCase());
+
+    }
+
     return (
         <div className="job-card">
             <h3>{job.title}</h3>
@@ -17,7 +25,7 @@ export default function JobCard(jobs) {
                     <div className="skills">
                         {
                             job.skills.map((s, i) => (
-                                <span key={i} className="skill">{s}</span>
+                                <span key={i} className={"skill " + (matchSkill(s)?"match":"")}>{s}</span>
                             ))
                         }
                     </div>)

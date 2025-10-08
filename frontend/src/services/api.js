@@ -79,7 +79,13 @@ export async function login(email, password){
     const data = await res.json();
     if(!res.ok) throw new Error(data.error||'Login failed');
 
+
     localStorage.setItem('accessToken', data.accessToken);
+    localStorage.setItem('userDetail', JSON.stringify(data.user));
+
+    
+    console.log("data.user ",localStorage.getItem('userDetail'));
+
     return data;
 
 

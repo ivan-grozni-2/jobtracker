@@ -5,12 +5,14 @@ import FilterBar from '../components/FilterBar';
 import PaginationControls from '../components/PaginationControl';
 import AddEditJobModal from '../components/AddEditJobModal'
 import { deleteJob } from '../services/api';
-import '../styles/job.css';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
 import Sidebar from '../components/Sidebar';
+import Profilebar from '../components/Profilebar';
+
+import '../styles/job.css';
 
 
 export default function JobPage() {
@@ -40,13 +42,15 @@ export default function JobPage() {
         sort: 'applied_date:desc'
     });
     const [meta, setMeta] = useState({ totalPages: 1, pageNum: 0 });
-    const [modalOpen, setModalOpen] = useState(false);  
+    const [modalOpen, setModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState(null);
+    const [user, setUser] = useState({});
+
 
     useEffect(() => {
-        
-        console.log("reset ",filters)
-        
+
+        console.log("reset ", filters)
+
         async function loadJobs() {
             try {
                 setLoading(true);
@@ -61,10 +65,19 @@ export default function JobPage() {
             }
         }
         loadJobs();
-        
+
     }, [filters]);
-    
-    function reset(exception){
+
+    const getProfile = () => {
+        return JSON.parse(localStorage.getItem('userDetail'));
+    }
+
+    const updateProfile = () => {
+        setUser(JSON.parse(localStorage.getItem('userDetail')));
+        return JSON.parse(localStorage.getItem('userDetail'));
+    };
+
+    function reset(exception) {
 
         const resetData = {
             search: '',
@@ -81,8 +94,9 @@ export default function JobPage() {
             skill: '',
             page: 1,
             limit: 6,
-            sort: 'applied_date:desc'}
-        setFilters({...resetData,...exception });
+            sort: 'applied_date:desc'
+        }
+        setFilters({ ...resetData, ...exception });
     }
 
     function handleFilterChange(newFilters) {
@@ -102,6 +116,9 @@ export default function JobPage() {
     return (
         <div className='dashboard-layout'>
             <Sidebar />
+            
+           { <Profilebar user={user} onUpdate={updateProfile} onGet = {getProfile} />
+           }
             <div className="dashboard">
                 <header className='dashboard-header'>
                     <div className='header-left'>
@@ -117,7 +134,7 @@ export default function JobPage() {
                 </header>
                 <main className='dashboard-content'>
                     <div className='dashboard-control'>
-                        <FilterBar filters={filters} onChange={handleFilterChange} onReset = {reset} />
+                        <FilterBar filters={filters} onChange={handleFilterChange} onReset={reset} />
                         <button className='add' onClick={() => { setEditingJob(null); setModalOpen(true); }}> + </button>
                     </div>
                     {loading && <p>Loading jobs...</p>}
@@ -126,6 +143,7 @@ export default function JobPage() {
                     <div className="job-grid">
                         {jobs.map(job => (
                             <JobCard
+                                skill = {getProfile().skills}
                                 key={job.id}
                                 job={job}
                                 onEdit={() => { setEditingJob(job); setModalOpen(true); }}

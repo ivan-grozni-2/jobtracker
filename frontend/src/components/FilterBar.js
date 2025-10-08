@@ -25,6 +25,7 @@ export default function FilterBar(params) {
                     className="input"
                     type="search"
                     name="search"
+                    placeholder="Search"
                     value={local.search}
                     onChange={handleInput}
                 />
