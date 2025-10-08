@@ -29,6 +29,7 @@ body{
   transition: all 0.3s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x:hidden ;
 }
 
 code {

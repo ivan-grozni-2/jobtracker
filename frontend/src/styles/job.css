@@ -1,9 +1,21 @@
+.dashboard-layout{
+    display: flex;
+    min-height: 100vh;
+}
+
 .dashboard{
+    flex: 1;
+    margin-left: 220px;
     background: var(--color-background);
     color: var(--color-text-1);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
+}
+.sidebar.collapsed ~ .dashboard{
+    transition: all 0.3s ease;
+    margin-left: 0;
 }
 
 .dashboard-header{
@@ -22,6 +34,7 @@
     font-weight: 600;
     color: var(--color-primary);
     margin-top: 0.95rem;
+    text-align: center;
 }
 .subtitle{
     color: var(--color-text-2);
@@ -125,20 +138,54 @@ button.edit:hover{
     text-shadow: 
     0 0 3px var(--color-primary),
     0 0 3px var(--color-primary)
-
 }
 button.delete{
     color: crimson;
 }
+button.secondary{
+    color: var(--color-text-1);
+    background-color: rgba(0,0,0,0);
+}
+button.secondary:hover{
+    box-shadow: none;
+    text-shadow: 0 0 1px var(--color-text-1);
+}
+button.add{
+    padding: 4px 8px;
+}
 
 
+.filters{
+    display: flex;
+    flex-direction: column;
+}
 .filter-bar{
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 15px;
 }
+.filter-bar.hide{
+    display: none;
+}
 .inputcontainer.filter{
     width: fit-content;
+    display: flex;
+    flex-direction: row;
+}
+.filter.search{
+    align-self: flex-end;
+}
+#filter-toggle{
+    justify-content: flex-end;
+    align-self: flex-end;
+    background-color: var(--color-accent);
+}
+#filter-toggle:hover{
+    text-shadow: none;
+    box-shadow: 0 0 3px var(--color-accent);
+}
+.theme{
+    color: black;
 }
 
 
@@ -173,7 +220,7 @@ button.delete{
     gap: 10px;
     margin-top: 15px;
 }
-@media(max-width: 800px){
+@media(max-width: 760px){
     .dashboard-content{
         padding: 1rem;
     }
