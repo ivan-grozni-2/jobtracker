@@ -121,3 +121,8 @@ export async function logout(){
     localStorage.removeItem("accessToken");
     if(res.ok === false) throw new Error("Cannot Logout");
 }
+
+export async function jobSummary(){
+    const data = await fetchWithAuth(`/jobs/summary`);
+    return data;
+}

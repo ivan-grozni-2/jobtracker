@@ -28,7 +28,7 @@ export default function FilterBar(params) {
                     value={local.search}
                     onChange={handleInput}
                 />
-                <button onClick={() => params.onReset({search:local.search})}>🔍</button>
+                <button className="secondary" onClick={() => params.onReset({search:local.search})}>🔍</button>
             </div>
 
             <button id="filter-toggle" className="secondary" onClick={() => setHid(prev => (!prev))}>filter</button>

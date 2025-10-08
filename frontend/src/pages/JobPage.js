@@ -40,8 +40,8 @@ export default function JobPage() {
         sort: 'applied_date:desc'
     });
     const [meta, setMeta] = useState({ totalPages: 1, pageNum: 0 });
-    const [modalOpen, setModalOpen] = useState(false)
-    const [editingJob, setEditingJob] = useState(null)
+    const [modalOpen, setModalOpen] = useState(false);  
+    const [editingJob, setEditingJob] = useState(null);
 
     useEffect(() => {
         

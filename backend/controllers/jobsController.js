@@ -141,6 +141,24 @@ exports.getJobs = async (req, res) => {
     }
 }
 
+exports.getJobSummary = async (req, res) => {
+    try{
+        const userId = req.user.id;
+        const [statusList] = await db.promise().query("Select status, count(*) as total From jobs Where user_id = ? Group by status", [userId]);
+        const [topThree] = await db.promise().query("Select company, title, status, id from jobs where user_id = ? limit 3", [userId])
+        const [upcomingInterview] = await db.promise().query("Select company, status, title, interview_date, id from jobs where user_id = ? AND interview_date > curdate()", [userId])
+
+        res.json({statusList, topThree, upcomingInterview});
+
+        
+
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: 'Failed to fetch Summary'})
+
+    }
+}
+
 exports.getJobById = async (req, res) => {
 
     try {

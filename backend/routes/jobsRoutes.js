@@ -10,7 +10,7 @@ router.get('/', authenticate,
     [
         query("company").optional().isString().withMessage('company error'),
         query("status").optional().isIn(['applied', 'hired', 'rejected', 'fired', 'resigned', '']).withMessage('status error'),
-        query("appliedDateFrom").optional({checkFalsy: true}).isISO8601().withMessage('Applied Date error'),
+        query("appliedDateFrom").optional({ checkFalsy: true }).isISO8601().withMessage('Applied Date error'),
         query("appliedDateTo").optional({ checkFalsy: true }).isISO8601().withMessage('Applied Date error'),
         query("releaseDateFrom").optional({ checkFalsy: true }).isISO8601().withMessage('Released Date error'),
         query("releaseDateTo").optional({ checkFalsy: true }).isISO8601().withMessage('Released Date error'),
@@ -25,7 +25,10 @@ router.get('/', authenticate,
         query("search").optional().isString().trim().escape().withMessage('Search error')
     ],
     validate,
-     jobsController.getJobs);
+    jobsController.getJobs
+);
+
+router.get('/summary', authenticate, jobsController.getJobSummary)
 
 router.get('/:id', authenticate, jobsController.getJobById);
 

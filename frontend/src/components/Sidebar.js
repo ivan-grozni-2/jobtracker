@@ -1,12 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { jobSummary } from '../services/api';
+import JobCard from './JobCards';
 import '../styles/sidebar.css';
 
 
-export default function Sidebar() {
+export default function Sidebar(params) {
     const [open, setOpen] = useState(true);
+    const [loading, setLoading] = useState(false)
+    const [statusCount, setStatusCount] = useState([]);
+    const [topThree, setTopThree] = useState([]);
+    const [upcomingInterview, setUpcomingInterview] = useState([]);
 
     const toggleSidebar = () => setOpen(prev => !prev);
+
+    useEffect(() => {
+        async function init() {
+            try {
+                setLoading(true);
+
+                const data = await jobSummary();
+
+                setTopThree(data.topThree);
+                setStatusCount(data.statusList);
+                setUpcomingInterview(data.upcomingInterview);
+
+                console.log(data);
+            } catch (err) {
+                throw new Error(err)
+            } finally {
+                setLoading(false);
+            }
+
+        }
+        init();
+    }, [open])
 
     return (
         <>
@@ -16,19 +44,54 @@ export default function Sidebar() {
 
             <aside className={`sidebar ${open ? ' open' : ' collapsed'}`}>
                 <div className='sidebar-header'>
-                    <h2 className='logo'>JobTracker</h2>
+                    <h3 className='logo'>Summary</h3>
                 </div>
-
+                
                 <nav className='sidebar-nav'>
-                    <NavLink to="/jobs" className={({ isActive }) => isActive ? "active" : ""}>
-                        Jobs
-                    </NavLink>
-                    <NavLink to="/profile" className={({ isActive }) => isActive ? "active" : ""}>
-                        Profile
-                    </NavLink>
-                    <NavLink to="/setting" className={({ isActive }) => isActive ? "active" : ""}>
-                        Setting
-                    </NavLink>
+                    <div className='jobs-status'>
+                        <h4>Jobs Status</h4>
+                        <ul className='list'>
+                            {
+                                statusCount.map((s, i) => (
+                                    <li className={`entry ${s.status}`} key={i}>
+                                        <p>{s.status}</p>
+                                        <p>{s.total}</p>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+
+                    </div>
+                    
+                    <div className='upcoming'>
+                        <h4>Upcoming Interview</h4>
+                        <div className='list'>
+                            {
+                                upcomingInterview.map((s, i) => (
+                                    <JobCard
+                                        key={s.id}
+                                        job={s}
+                                        edit={true}
+                                    />
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    <div className='top-three'>
+                        <h4>Latest application</h4>
+                        <div className='list'>
+                            {
+                                topThree.map((s, i) => (
+                                    <JobCard
+                                        key={s.id}
+                                        job={s}
+                                        edit={true}
+                                    />
+                                ))
+                            }
+                        </div>
+                    </div>
                 </nav>
             </aside>
 
