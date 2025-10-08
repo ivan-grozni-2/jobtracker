@@ -74,49 +74,57 @@ export default function JobPage() {
     }
 
     return (
-        <div className="job-container">
-            <h2>Job Tracker</h2>
-            <div className="job_header">
-                <button onClick={toggleTheme} className="btn-secondary">
-                    {theme === 'light' ? '🌙' : '☀️'}
-                </button>
-                <button onClick={handleLogout}>logout</button>
-            </div>
-            <button className='button' onClick={() => { setEditingJob(null); setModalOpen(true); }}> +Add </button>
+        <div className="dashboard">
+            <header className='dashboard-header'>
+                <div className='header-left'>
+                <h1 className='app-title'>Job Tracker</h1>
+                <p className='subtitle'>Manage and track your job application</p>
+                </div>
+                <div className='header-right'>
+                    <button onClick={toggleTheme} className="btn-secondary">
+                        {theme === 'light' ? '🌙' : '☀️'}
+                    </button>
+                    <button onClick={handleLogout}>logout</button>
+                </div>
+            </header>
+            <main className='dashboard-content'>
+                <div className='dashboard-control'>
+                <button className='button' onClick={() => { setEditingJob(null); setModalOpen(true); }}> +Add </button>
 
-            <FilterBar filters={filters} onChange={handleFilterChange} />
+                <FilterBar filters={filters} onChange={handleFilterChange} />
+                </div>
+                {loading && <p>Loading jobs...</p>}
+                {error && <p className='error'>{error}</p>}
 
-            {loading && <p>Loading jobs...</p>}
-            {error && <p className='error'>{error}</p>}
+                <div className="job-grid">
+                    {jobs.map(job => (
+                        <JobCard
+                            key={job.id}
+                            job={job}
+                            onEdit={() => { setEditingJob(job); setModalOpen(true); }}
+                            onDelete={async () => {
+                                if (window.confirm(`Are you sure`)) {
+                                    await deleteJob(job.id);
+                                    const updated = jobs.filter(j => j.id !== job.id);
+                                    setJobs(updated);
+                                }
+                            }}
+                        />
+                    ))}
+                </div>
 
-            <div className="job-list">
-                {jobs.map(job => (
-                    <JobCard
-                        key={job.id}
-                        job={job}
-                        onEdit={() => { setEditingJob(job); setModalOpen(true); }}
-                        onDelete={async () => {
-                            if (window.confirm(`Are you sure`)) {
-                                await deleteJob(job.id);
-                                const updated = jobs.filter(j => j.id !== job.id);
-                                setJobs(updated);
-                            }
-                        }}
-                    />
-                ))}
-            </div>
+                <PaginationControls
+                    page={filters.page}
+                    totalPages={meta.totalPages}
+                    onChange={handlePageChange}
+                />
 
+            </main>
             <AddEditJobModal
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}
                 job={editingJob}
                 onSuccess={() => setFilters(f => ({ ...f }))}
-            />
-
-            <PaginationControls
-                page={filters.page}
-                totalPages={meta.totalPages}
-                onChange={handlePageChange}
             />
 
         </div>

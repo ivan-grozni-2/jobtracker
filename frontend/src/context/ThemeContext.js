@@ -14,6 +14,11 @@ export function ThemeProvider({ children }) {
             setTheme(saved);
             document.documentElement.setAttribute('data-theme', saved === 'dark' ? 'darkmode' : '');
 
+        }else{
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initial = prefersDark?'dark':"light";
+            setTheme(initial);
+            document.documentElement.setAttribute('dark-theme', initial === 'dark'?"darkmode":"");
         }
 
     }, []);

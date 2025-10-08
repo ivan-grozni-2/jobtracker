@@ -1,74 +1,114 @@
-.job-container{
-    background-color: var(--color-background);
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    font-family: sans-serif;
-    color: var(--color-text-1)
+.dashboard{
+    background: var(--color-background);
+    color: var(--color-text-1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
+.dashboard-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.app-title{
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-top: 0.95rem;
+}
+.subtitle{
+    color: var(--color-text-2);
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+}
+.header-right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.dashboard-content{
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.dashboard-controls{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.job-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280,1fr));
+    gap: 1rem;
+}
 .job-card{
     background-color: var(--color-surface);
     border:solid 1px var(--color-border);
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 6px;
-    width:fit-content;
-    flex-grow: 0.3;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
-
+.job-card:hover{
+    transition: all ease 0.25s;
+    transform: translateY(-3px);
+    box-shadow: 0 2px 5px var(--color-primary);
+}
+.job-card h3{
+    margin: 0;
+    font-size: 1.2rem;
+    color:var(--color-primary);
+}
+.job-card p{
+    margin: 0.3rem 0;
+    color: var(--color-text-2);
+}
 .job-list{
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
 }
-
 .skills{
     margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
-
 .skill{
-    background: var(--color-text-2);
+    background: var(--color-primary);
+    color: white;
     border-radius: 4px;
     padding: 2px 6px;
     margin-right: 4px;
     font-size: 0.8rem;
 }
-
-.filter-bar{
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-
-}
-
-.inputcontainer.filter{
-    width: fit-content;
-}
-
-.pagination{
-    display:flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.jobs_header{
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
 .job-actions{
     display: flex;
     gap:8px;
     align-items: center;
 }
 
+
 button.edit, button.delete{
     color: var(--color-text-1);
-    background-color: #ffffff11;
+    background-color: #ffffff00;
     font-size: 1.5rem;
     
 }
@@ -91,6 +131,25 @@ button.delete{
     color: crimson;
 }
 
+
+.filter-bar{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+.inputcontainer.filter{
+    width: fit-content;
+}
+
+
+.pagination{
+    display:flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 15px;
+}
+
 .modal-overlay{
     position: fixed;
     top:0; left:0; bottom:0; right:0;
@@ -100,7 +159,6 @@ button.delete{
     justify-content: center;
     z-index: 5;
 }
-
 .modal{
     background:var(--color-surface);
     padding:20px;
@@ -109,11 +167,25 @@ button.delete{
     max-width: 400px;
     color:var(--color-text-1)
 }
-
 .modal-actions{
     display:flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 15px;
 }
+@media(max-width: 800px){
+    .dashboard-content{
+        padding: 1rem;
+    }
+    .dashboard-header{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 
+
+[data-theme="darkmode"] .job-card {
+    background: rgba(31, 41, 55, 0.7);
+    backdrop-filter: blur(80px);
+  }
+  

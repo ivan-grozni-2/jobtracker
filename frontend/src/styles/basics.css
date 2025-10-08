@@ -83,7 +83,7 @@
     position: relative;
     margin: 0;
     padding: 0;
-    background-color: var(--color-surface);
+    background-color: var(--color-background);
   }
   
   .input {
@@ -115,8 +115,9 @@
     top: 0.1rem;
     font-size: 0.7rem;
     color: var(--color-primary);
-    background-color: var(--color-surface);
-    padding: 2px;
+    background-color: var(--color-label);
+    margin: 0;
+    padding: 0;
     z-index: 1;
   }
   .altInputName{
@@ -125,7 +126,7 @@
     top: 0.1rem;
     font-size: 0.7rem;
     color: var(--color-primary);
-    background-color: var(--color-surface);
+    background-color: var(--color-label);
     padding: 2px;
     z-index: 1;
   }
