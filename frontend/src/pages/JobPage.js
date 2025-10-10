@@ -45,12 +45,11 @@ export default function JobPage() {
     const [modalOpen, setModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState(null);
     const [user, setUser] = useState({});
+    const [openProfile, setOpenProfile] = useState(true);
+    const [openSummary, setOpenSummary] = useState(true);
 
 
     useEffect(() => {
-
-        console.log("reset ", filters)
-
         async function loadJobs() {
             try {
                 setLoading(true);
@@ -76,6 +75,17 @@ export default function JobPage() {
         setUser(JSON.parse(localStorage.getItem('userDetail')));
         return JSON.parse(localStorage.getItem('userDetail'));
     };
+
+    const toggleBar = (side) => {
+        if(side === 'profile'){
+            setOpenSummary(false);
+            setOpenProfile(true);
+        }
+        if(side === 'summary'){
+            setOpenProfile(false);
+            setOpenSummary(true);
+        }
+    }
 
     function reset(exception) {
 
@@ -115,9 +125,9 @@ export default function JobPage() {
 
     return (
         <div className='dashboard-layout'>
-            <Sidebar />
+            <Sidebar forceToggle = {openSummary} toggleBar={toggleBar} />
             
-           { <Profilebar user={user} onUpdate={updateProfile} onGet = {getProfile} />
+           { <Profilebar  toggleBar={toggleBar}  user={user} onUpdate={updateProfile} onGet = {getProfile} forceToggle = {openProfile} />
            }
             <div className="dashboard">
                 <header className='dashboard-header'>

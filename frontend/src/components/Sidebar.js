@@ -11,7 +11,10 @@ export default function Sidebar(params) {
     const [topThree, setTopThree] = useState([]);
     const [upcomingInterview, setUpcomingInterview] = useState([]);
 
-    const toggleSidebar = () => setOpen(prev => !prev);
+    const toggleSidebar = () => {
+        setOpen(prev => !prev)
+        params.toggleBar('summary');
+    }
 
     useEffect(() => {
         async function init() {
@@ -24,7 +27,6 @@ export default function Sidebar(params) {
                 setStatusCount(data.statusList);
                 setUpcomingInterview(data.upcomingInterview);
 
-                console.log(data);
             } catch (err) {
                 throw new Error(err)
             } finally {
@@ -34,14 +36,18 @@ export default function Sidebar(params) {
         }
         init();
     }, [open])
+    
+    useEffect(() => {
+        setOpen(prev => params.forceToggle && prev);
+    },[params.forceToggle])
 
     return (
         <>
-            <button className='sidebar-toggle' onClick={toggleSidebar}>
+            <button className='sidebar-toggle summary' onClick={toggleSidebar}>
                 ☰
             </button>
 
-            <aside className={`sidebar ${open ? ' open' : ' collapsed'}`}>
+            <aside className={` summary sidebar ${open ? ' open' : ' collapsed'}`}>
                 <div className='sidebar-header'>
                     <h3 className='logo'>Summary</h3>
                 </div>

@@ -6,7 +6,6 @@ export default function JobCard(jobs) {
 
     const matchSkill = (comp) => {
         const skill = jobs.skill.map((s) => (s = s.skill.toLowerCase()))
-        console.log(skill.includes(comp.toLowerCase()))
         return skill.includes(comp.toLowerCase());
 
     }
